@@ -152,7 +152,7 @@ if ($conn->connect_error) {
         </div>
         <div class="form-group col-sm-3">
           <label for="cvv">CVV</label>
-          <input type="cvv" class="form-control" name="cvv" placeholder="***">
+          <input type="password" class="form-control" name="cvv" placeholder="***">
           <?php
           if ($_SERVER["REQUEST_METHOD"] == "POST") {
             validate_cvv();
