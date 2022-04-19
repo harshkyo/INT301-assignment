@@ -4,11 +4,6 @@ $username = "root";
 $password = "";
 $dbname = "assignment3";
 
-
-$GLOBALS['namevalidated'] = false;
-$GLOBALS['cardnumvalidated'] = false;
-$GLOBALS['cvvvalidated'] = false;
-
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
@@ -28,12 +23,10 @@ if ($conn->connect_error) {
       $name = clean_input($_POST['name']);
       if (strlen($name) == 0) {
         echo "<p style='color:red;'>Field cannot be empty</p>";
-        $GLOBALS['namevalidated'] = false;
         return false;
       }
       else if (!preg_match($pattern, $name)) {
         echo "<p style='color:red;'>Name should only have alphabets and spaces</p>";
-        $GLOBALS['namevalidated'] = false;
         return false;
       }
       return true;
@@ -45,15 +38,13 @@ if ($conn->connect_error) {
       $pattern = '/^[0-9]*$/';
       if (strlen($cardnum) == 0) {
         echo "<p style='color:red;'>Field cannot be empty</p>";
-        $GLOBALS['cardnumvalidated'] = false;
+        return false;
         return;
       } else if (!preg_match($pattern, $cardnum)) {
-        echo "<p style='color:red;'>Only digits allowed</p>";
-        $GLOBALS['cardnumvalidated'] = false;
+        echo "<p style='color:red;'>Only numbers are allowed</p>";
         return false;
       } else if (strlen($cardnum) != 16) {
         echo "<p style='color:red;'>16 digit card number required</p>";
-        $GLOBALS['cardnumvalidated'] = false;
         return false;
       }
       return true;
@@ -61,13 +52,16 @@ if ($conn->connect_error) {
     function validate_cvv()
     {
       $cvv = clean_input($_POST['cvv']);
+      $pattern = '/^[0-9]*$/';
       if (strlen($cvv) == 0) {
         echo "<p style='color:red;'>Field cannot be empty</p>";
-        $GLOBALS['cvv'] = false;
         return false;
-      } else if (strlen($cvv) != 3) {
+      } else if (!preg_match($pattern, $cvv)) {
+        echo "<p style='color:red;'>Only numbers are allowed</p>";
+        return false;
+      }
+      else if (strlen($cvv) != 3) {
         echo "<p style='color:red;'>CVV should be of 3 digit</p>";
-        $GLOBALS['cvv'] = false;
         return false;
       }
       return true;
